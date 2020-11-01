@@ -35,6 +35,28 @@
     "-header", BASE + "/glass_360.hdr",
     "-chunk_start_index", "1", BASE + "/glass_360_%d.chk"]);
 
+  const ffmpeg_head = spanw("ffmpeg",[
+    "-f", "webm_dash_manifest",
+    "-live", "1",
+    "-i", BASE+"/glass_360.hdr",
+
+    "-f", "webm_dash_manifest",
+    "-live", "1",
+    "-i", BASE+"/glass_171.hdr",
+    "-c", "copy",
+    "-map", "0",
+    "-map", "1",
+
+    "-f", "webm_dash_manifest",
+    "-live", "1",
+    "-adaptation_sets", "id=0,streams=0 id=1,streams=1"
+    "-chunk_start_index", "1",
+    "-chunk_duration_ms", "2000",
+    "-time_shift_buffer_depth", "7200",
+    "-minimum_update_period", "7200",
+    BASE+"/glass_live_manifest.mpd")
+  ]);
+
   raspivid.stdout.pipe(ffmpeg.stdin);
 
   raspivid.on("exit", function(code){
@@ -45,9 +67,18 @@
   });
 
   // Create server
-  var server = http.createServer(function onRequest (req, res) {
+  var server = http.createServer(function(req, res) {
     console.log("on request", req.url);
-    serve(req, res, finalhandler(req, res));
+
+    // read file
+    const fileContent = fs.readFileSync(BASE + req.path);
+
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type'               : 'video/mp4',
+    });
+    res.write(fileContent);
+    res.end();
   });
 
   // Listen
