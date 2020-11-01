@@ -20,7 +20,7 @@
     "-y", "-an",
     "-map", "0:0",
     "-c:v", "libvpx",
-    "-s" "1280x720",
+    "-s", "1280x720",
     "-keyint_min", "60",
     "-g", "60",
     "-speed", "6",
@@ -31,8 +31,9 @@
     "-max-intra-rate", "300",
     "-deadline", "realtime",
     "-lag-in-frames", "0",
-    "-error-resilient", "1", "-b:v", "3000k",
-    "-f" "webm_chunk",
+    "-error-resilient", "1",
+    "-b:v", "3000k",
+    "-f", "webm_chunk",
     "-header", BASE + "/glass_360.hdr",
     "-chunk_start_index", "1", BASE + "/glass_360_%d.chk"]);
 
