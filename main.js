@@ -51,7 +51,7 @@
 
     "-f", "webm_dash_manifest",
     "-live", "1",
-    "-adaptation_sets", "id=0,streams=0 id=1,streams=1"
+    "-adaptation_sets", "id=0,streams=0 id=1,streams=1",
     "-chunk_start_index", "1",
     "-chunk_duration_ms", "2000",
     "-time_shift_buffer_depth", "7200",
