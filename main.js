@@ -37,7 +37,7 @@
     "-header", BASE + "/glass_360.hdr",
     "-chunk_start_index", "1", BASE + "/glass_360_%d.chk"]);
 
-  const ffmpeg_head = spanw("ffmpeg",[
+  const ffmpeg_head = spawn("ffmpeg",[
     "-f", "webm_dash_manifest",
     "-live", "1",
     "-i", BASE + "/glass_360.hdr",
