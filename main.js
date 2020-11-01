@@ -3,6 +3,7 @@
 
   const dataLog = function(data){console.log(data);};
   const BASE = "/home/pi/webm_live";
+  const BASE_HTML = "/home/pi/pi-513-control/html";
 
   console.log("start raspistill");
   const raspivid = spawn("raspivid",[
@@ -66,8 +67,8 @@
     console.log(`ffmpeg exited with code ${code}`);
   });
 
-  // Create server
-  var server = http.createServer(function(req, res) {
+  // Create VIDEO server
+  http.createServer(function(req, res) {
     console.log("on request", req.url);
 
     // read file
@@ -76,10 +77,6 @@
     var contentType = "text/html";
     if(req.path.endsWith(".mpd")) {
       contentType = "application/dash+xml";
-    }
-
-    if(req.path.endsWith(".js")) {
-      contentType = "text/javascript";
     }
 
     if(req.path.endsWith(".chk")) {
@@ -92,7 +89,24 @@
     });
     res.write(fileContent);
     res.end();
-  });
+  }).listen(8080);
 
-  // Listen
-  server.listen(8080);
+  // Create HTML server
+  http.createServer(function(req, res) {
+    console.log("on request", req.url);
+
+    // read file
+    const fileContent = fs.readFileSync(BASE_HTML + req.path);
+
+    var contentType = "text/html";
+    if(req.path.endsWith(".js")) {
+      contentType = "text/javascript";
+    }
+
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type'               : contentType,
+    });
+    res.write(fileContent);
+    res.end();
+  }).listen(8081);
