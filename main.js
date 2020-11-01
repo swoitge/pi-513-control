@@ -56,7 +56,7 @@
     "-chunk_duration_ms", "2000",
     "-time_shift_buffer_depth", "7200",
     "-minimum_update_period", "7200",
-    BASE + "/glass_live_manifest.mpd")
+    BASE + "/glass_live_manifest.mpd"
   ]);
 
   raspivid.stdout.pipe(ffmpeg.stdin);
