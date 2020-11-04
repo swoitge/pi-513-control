@@ -23,11 +23,22 @@
       "-fps", "25"]);
   }
 
-  const ffmpeg = spawn('ffmpeg',
-  [//"-r", "25",
-   //"-re",
-   //"-i", "pipe:0",
-    "-f",  "dshow",  "-i", "video=USB2.0 Camera",
+  var baseParams;
+  if(isWindows) {
+    baseParams = [
+      "-f",  "dshow",
+      "-i", "video=USB2.0 Camera"
+    ];
+  }
+  else {
+    baseParams = [
+      "-i", "pipe:0"
+    ];
+  }
+
+  var params = [
+    //"-r", "25",
+    //"-re",
     //"-y", "-an",
     "-map", "0:0",
     "-c:v", codec,
@@ -44,11 +55,15 @@
     "-lag-in-frames", "0",
     "-error-resilient", "1",
     "-b:v", "500k",
+    "-ldash", "1",
     "-f", "webm_chunk",
     "-header", BASE + "/glass_360.hdr",
     "-window_size", "10",
     "-chunk_start_index", "1",
-    BASE + "/glass_360_%d.chk"]);
+    BASE + "/glass_360_%d.chk"];
+
+  Array.prototype.push.apply(baseParams, params);
+  const ffmpeg = spawn('ffmpeg', baseParams);
 
   ffmpeg.stdout.on("data", dataLog);
   ffmpeg.stderr.on("data", dataLog);
