@@ -55,7 +55,7 @@
     "-lag-in-frames", "0",
     "-error-resilient", "1",
     "-b:v", "500k",
-    "-ldash", "1",
+    //"-ldash", "1", not working rpi
     "-f", "webm_chunk",
     "-header", BASE + "/glass_360.hdr",
     "-window_size", "10",
