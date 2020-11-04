@@ -1,8 +1,8 @@
 var player, targetLatency, minDrift, catchupPlaybackRate, liveCatchupLatencyThreshold;
 
 function init() {
-    var video,
-        url = "http://localhost:8080/glass_live_manifest.mpd";
+    var video;
+    var url = "http://" + location.hostname + ":8080/glass_live_manifest.mpd";
 
     video = document.querySelector("video");
     player = dashjs.MediaPlayer().create();
