@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
 
-
+const dataLog = function(data){console.log(data.toString());};
 
 var BASE_HTML = "./html";
 
@@ -67,6 +67,8 @@ p2j.on('jpeg', (jpeg) => {
 });
 
 const ffmpeg = spawn('ffmpeg', baseParams, {stdio : ['ignore', 'pipe', 'ignore']});
+ffmpeg.stdout.on("data", dataLog);
+ffmpeg.stderr.on("data", dataLog);
 
 ffmpeg.on('error', (error) => {
     console.log(error);
