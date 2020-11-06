@@ -1,0 +1,70 @@
+<html>
+  <head>
+      <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+      <title>JPEG pipe test</title>
+      <script type="text/javascript">
+        const socket = new WebSocket("ws://" + document.location.host);
+        setInterval(function(){
+          call("getCurrentImage", function(data, s2, a3){
+            //console.log("callback");
+            var buffer = data.result.data;
+            const STRING_CHAR = String.fromCharCode.apply(null, buffer);
+            const base64String = btoa(STRING_CHAR);
+            document.getElementById("image").src = "data:image/jpeg;base64," + base64String;
+          })
+        }, 40);
+
+        var callbackCount=0;
+        var callbacks = [];
+
+        socket.onmessage = function(msg){
+          //console.log("received message", msg);
+
+          // skip something
+          if(msg.data == "something") return;
+
+          var data = JSON.parse(msg.data);
+          if(callbacks[data.messageId]) {
+            callbacks[data.messageId](data);
+          }
+        }
+
+        function call() {
+
+          var name = arguments[0];
+
+          // prepare the sending
+          var sendObj = {
+            messageId : "msg_" + callbackCount++,
+            method    : name,
+            args      : [],
+            callback  : false
+          };
+
+          // append all arguments except functions
+          for(var i=1; i<arguments.length; i++) {
+            var arg = arguments[i];
+            if(typeof arg == "function") {
+              // skip
+            }
+            else {
+              sendObj.args.push(arg);
+            }
+          }
+
+          var lastArg = arguments[arguments.length-1];
+          if(typeof lastArg == "function") {
+            // register callback
+            sendObj.callback = true;
+            callbacks[sendObj.messageId] = lastArg;
+          }
+          socket.send(JSON.stringify(sendObj));
+        }
+      </script>
+  </head>
+  <body>
+    <div id="mainContainer" class="mainContainer">
+      <img id="image" src="/image.jpg">
+    </div>
+ </body>
+</html>
