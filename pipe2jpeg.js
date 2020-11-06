@@ -2,20 +2,42 @@ const P2J = require('pipe2jpeg');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
-
-
 const spawn = require('child_process').spawn;
 
+
+
 var BASE_HTML = "./html";
+
+const isWindows = process.platform == "win32";
+
+var raspivid;
+if(!isWindows) {
+  raspivid  = spawn("raspivid",[
+    "-o", "-",
+    "-t", "0",
+    "-w","1280",
+    "-h", "720",
+    "-fps", "25"]);
+}
+
+var baseParams;
+if(isWindows) {
+  baseParams = [
+    "-f",  "dshow",
+    "-i", "video=USB2.0 Camera"
+  ];
+}
+else {
+  baseParams = [
+    "-i", "pipe:0"
+  ];
+}
+
 
 const params = [
     /* log info to console */
     '-loglevel',
     'quiet',
-
-    /* use an artificial video input */
-    "-f",  "dshow",
-    "-i", "video=USB2.0 Camera",
 
     /* set output flags */
     '-an',
@@ -34,6 +56,8 @@ const params = [
     'pipe:1'
 ];
 
+Array.prototype.push.apply(baseParams, params);
+
 const p2j = new P2J();
 var currentJpeg;
 
@@ -42,7 +66,7 @@ p2j.on('jpeg', (jpeg) => {
   currentJpeg = jpeg;
 });
 
-const ffmpeg = spawn('ffmpeg', params, {stdio : ['ignore', 'pipe', 'ignore']});
+const ffmpeg = spawn('ffmpeg', baseParams, {stdio : ['ignore', 'pipe', 'ignore']});
 
 ffmpeg.on('error', (error) => {
     console.log(error);
@@ -53,6 +77,10 @@ ffmpeg.on('exit', (code, signal) => {
 });
 
 ffmpeg.stdout.pipe(p2j);
+
+if(raspivid) {
+  raspivid.stdout.pipe(ffmpeg);
+}
 
 var server = http.createServer(function(req, res) {
   console.log("on request", req.url);
