@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# install git
-sudo apt-get update && sudo apt-get install -y git
-
 # uv4l
 sudo cat > /etc/apt/sources.list << EOL
 deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
@@ -14,12 +11,16 @@ EOL
 sudo apt-get update && sudo apt-get install uv4l uv4l-server uv4l-raspicam uv4l-raspicam-extras
 sudo service uv4l_raspicam start
 
-
 # npm install
-cd /home/pi
-curl -o nodejs.tar.gz https://nodejs.org/dist/v9.9.0/node-v9.9.0-linux-armv6l.tar.gz
-tar --skip-old-files -xzf nodejs.tar.gz
-sudo cp -r node-v9.9.0-linux-armv6l/* /usr/local/
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get update && sudo apt-get install -y nodejs
+
+sudo npm install -g node-gyp
+cd /home/pi/meteor/bundle/programs/server/node_modules/fibers
+node ./build
+
+# install git
+sudo apt-get update && sudo apt-get install -y git
 
 # install control software
 git config --global user.email "you@example.com"
