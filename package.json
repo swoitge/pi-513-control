@@ -1,5 +1,5 @@
 {
-  "name": "3d-live-video",
+  "name": "test-meteor",
   "private": true,
   "scripts": {
     "start": "meteor run",
@@ -8,12 +8,13 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.1",
+    "@babel/runtime": "^7.11.2",
+    "bootstrap": "^4.5.3",
     "create-cert": "^1.0.6",
     "http-proxy": "^1.18.1",
-    "js-base64": "^3.5.2",
-    "meteor-node-stubs": "^0.4.1",
-    "pipe2jpeg": "^0.3.1",
-    "ws": "^7.3.1"
-  }
+    "jquery": "^3.5.1",
+    "materialize-css": "^1.0.0-rc.2",
+    "meteor-node-stubs": "^1.0.1"
+  },
+  "meteor": {}
 }
