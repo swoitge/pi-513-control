@@ -14,10 +14,7 @@ sudo service uv4l_raspicam start
 # npm install
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get update && sudo apt-get install -y nodejs
-
 sudo npm install -g node-gyp
-cd /home/pi/meteor/bundle/programs/server/node_modules/fibers
-node ./build
 
 # install git
 sudo apt-get update && sudo apt-get install -y git
@@ -26,7 +23,7 @@ sudo apt-get update && sudo apt-get install -y git
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
-git clone https://github.com/swoitge/pi-513-control.git
-cd pi-513-control
+# git clone https://github.com/swoitge/pi-513-control.git
+#cd pi-513-control
 
-npm install
+#npm install
