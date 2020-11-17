@@ -1,19 +1,40 @@
 <template name="viewer">
   <div class="viewer">
-    <img src="/stream/video.mjpeg">
-    <div class="status">
-      <div class="alpha">{{orientation.a}}</div>
-      <div class="beta">{{orientation.b}}</div>
-      <div class="gamma">{{orientation.c}}</div>
+    <floatmenu class="{{#if menuVisible}}visible{{/if}}">
+      <section>
+        <div class="status">
+          <div class="alpha">{{orientation.a}}</div>
+          <div class="beta">{{orientation.b}}</div>
+          <div class="gamma">{{orientation.c}}</div>
+        </div>
+      </section>
 
-      <div class="switch">
-        <label>
-          Off
-          <input type="checkbox" {{disabledState}} class="enable-tracking">
-          <span class="lever"></span> On
-        </label>
-      </div>
+      <section>
+        <div class="switch">
+          <label>
+            Off
+            <input type="checkbox" {{disabledState}} class="enable-tracking">
+            <span class="lever"></span> On
+          </label>
+        </div>
+      </section>
 
-    </div>
+      <section>
+        <!-- Dropdown Trigger -->
+        <a class='dropdown-trigger btn' href='#' data-target='dropdown1'><i class="material-icons">settings</i></a>
+
+        <!-- Dropdown Structure -->
+        <ul id='dropdown1' class='dropdown-content'>
+          <li><a href="{{streamURL}}">uv4l</a></li>
+          <li><a href="#!">two</a></li>
+          <li class="divider" tabindex="-1"></li>
+          <li><a href="#!">three</a></li>
+          <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+          <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+        </ul>
+      </section>
+    </floatmenu>
+
+    <img src="/stream/video.mjpeg" class="live-image">
   </div>
 </template>

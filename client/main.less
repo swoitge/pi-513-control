@@ -5,5 +5,26 @@ body {
 }
 
 .viewer img {
-  max-width: 100%;
+  width: 100%;
+}
+
+floatmenu {
+  position: absolute;
+  background-color: #ffffff8f;
+  width: 100%;
+  display: none;
+
+  &.visible {
+    display: flex;
+  }
+
+  section {
+    margin-left: 12px;
+    border-left: 1px solid #a0a0a0;
+    padding: 12px 24px;
+  }
+
+  .status {
+    display: flex;
+  }
 }
