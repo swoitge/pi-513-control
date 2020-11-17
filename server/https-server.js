@@ -7,6 +7,16 @@ var httpProxy   = Npm.require("http-proxy");
 var createCert  = Npm.require('create-cert');
 
 Meteor.startup(function(){
+  // create STREAM proxy object
+  var streamProxy = new httpProxy.createProxyServer({
+    target          : process.env.STREAM_BASE/*,
+    proxyTimeout    : 10000,
+    protocolRewrite : "https"*/
+  });
+  streamProxy.on('proxyReq', function(proxyReq, req, res, options) {
+    console.log("on proxy request");
+  });
+
   // create the proxy object
   var proxy = new httpProxy.createProxyServer({
     target          : process.env.ROOT_URL,
@@ -29,9 +39,6 @@ Meteor.startup(function(){
     catch(e) {
       console.log("exception on proxy request", e);
     }
-  });
-
-  proxy.on('proxyRes', function (proxyRes, req, res) {
   });
 
   // Listen for the `error` event on `proxy`.
@@ -64,12 +71,17 @@ Meteor.startup(function(){
   createCert(options).then(function(keys){
     console.log("certificate generated for", hostname);
     var server = https.createServer(keys, function (request, response) {
-      //console.log("request", request.url);
+      console.log("request", request.url);
+
+      if(request.url.startsWith("/stream")) {
+        streamProxy.web(request, response);
+      }
 
       //var remoteIP = request.connection.remoteAddress.replace("::ffff:", "");
-
-      // request timeouts
-      proxy.web(request, response);
+      else {
+        // request timeouts
+        proxy.web(request, response);
+      }
       //return;
     });
 

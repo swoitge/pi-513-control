@@ -1,17 +1,19 @@
 <template name="viewer">
-  <img src="{{streamURL}}">
-  <div class="status">
-    <div class="alpha">{{orientation.a}}</div>
-    <div class="beta">{{orientation.b}}</div>
-    <div class="gamma">{{orientation.c}}</div>
+  <div class="viewer">
+    <img src="/stream/video.mjpeg">
+    <div class="status">
+      <div class="alpha">{{orientation.a}}</div>
+      <div class="beta">{{orientation.b}}</div>
+      <div class="gamma">{{orientation.c}}</div>
 
-    <div class="switch">
-      <label>
-        Off
-        <input type="checkbox" {{disabledState}} class="enable-tracking">
-        <span class="lever"></span> On
-      </label>
+      <div class="switch">
+        <label>
+          Off
+          <input type="checkbox" {{disabledState}} class="enable-tracking">
+          <span class="lever"></span> On
+        </label>
+      </div>
+
     </div>
-
   </div>
 </template>
