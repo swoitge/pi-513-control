@@ -4,3 +4,7 @@ Meteor.startup(() => {
   // code to run on server at startup
   Meteor.settings.public.mjpegStreamBase = process.env.STREAM_BASE;
 });
+
+Meteor.methods({
+  setViewerOrientation : function(){}
+})
