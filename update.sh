@@ -12,3 +12,7 @@ tar -xzf live-view.tar.gz
 # build fibers
 cd /home/pi/meteor/bundle/programs/server/node_modules/fibers
 node ./build
+
+# add rpio
+cd /home/pi/meteor/bundle/programs/server
+npm install rpio
