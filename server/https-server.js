@@ -73,7 +73,7 @@ Meteor.startup(function(){
     var server = https.createServer(keys, function (request, response) {
       console.log("request", request.url);
 
-      if(request.url.startsWith("/stream")) {
+      if(request.url.startsWith("/stream") || request.url.startsWith("/api")) {
         streamProxy.web(request, response);
       }
 

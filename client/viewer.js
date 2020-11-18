@@ -53,5 +53,14 @@ Template.viewer.events({
     console.log("click")
     var visible = template.menuVisible.get()
     template.menuVisible.set(!visible);
+  },
+  "click .rest-zoom1":function(event, template){
+    api.rest.zoom(1);
+  },
+  "click .rest-zoom2":function(event, template){
+    api.rest.zoom(2);
+  },
+  "click .rest-zoom3":function(event, template){
+    api.rest.zoom(3);
   }
 });
