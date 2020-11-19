@@ -6,7 +6,7 @@ deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
 # Uncomment line below then 'apt-get update' to enable 'apt-get source'
 #deb-src http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
 deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main
-EOL
+EOL'
 
 sudo apt-get update && sudo apt-get install uv4l uv4l-server uv4l-raspicam uv4l-raspicam-extras
 sudo service uv4l_raspicam start
