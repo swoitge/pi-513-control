@@ -5,6 +5,7 @@ Template.viewer.onCreated(function() {
   template.orientation = new ReactiveVar({a:0, b:0, c:0});
   template.trackingEnabled = new ReactiveVar(true);
   template.menuVisible = new ReactiveVar(true);
+  template.locked = new ReactiveVar(false);
 });
 
 Template.viewer.onRendered(function() {
@@ -36,6 +37,9 @@ Template.viewer.helpers({
   menuVisible : function(){
     return Template.instance().menuVisible.get();
   },
+  locked : function(){
+    return Template.instance().locked.get();
+  },
   trackingEnabled : function(){
     return Template.instance().trackingEnabled.get();
   },
@@ -62,5 +66,9 @@ Template.viewer.events({
   },
   "click .rest-zoom3":function(event, template){
     api.rest.zoom(3);
+  },
+  "click .lock":function(event, template){
+    var locked = template.locked.get()
+    template.locked.set(!locked);
   }
 });

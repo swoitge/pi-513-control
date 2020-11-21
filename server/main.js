@@ -3,6 +3,11 @@ import { Meteor } from 'meteor/meteor';
 var range = 1024;       /* LEDs can quickly hit max brightness, so only use */
 var clockdiv = 128;       /* Clock divider (PWM refresh rate), 8 == 2.4MHz */
 
+var SERVOS = {
+  12: {min:180, max:400},
+  35: {min:180, max:400}
+}
+
 var rpio;
 
 try {
@@ -28,6 +33,21 @@ Meteor.startup(() => {
 Meteor.methods({
   setViewerOrientation : function(){},
   setServo : function(pin, pwm){
-    rpio.pwmSetData(servo.pin, pwm);
+
+    // get config
+    var conf = SERVOS[pin];
+    if(!conf) {
+      console.log("no servo config found for pin", pin);
+      return;
+    }
+
+    // check bounds
+    var value = pwm;
+
+    value = Math.max(conf.min, value);
+    value = Math.min(conf.max, value);
+
+    // set
+    rpio.pwmSetData(pin, value);
   },
 })
