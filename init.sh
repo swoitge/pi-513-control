@@ -11,6 +11,9 @@ EOL'
 sudo apt-get update && sudo apt-get install -y uv4l uv4l-server uv4l-raspicam uv4l-raspicam-extras
 sudo service uv4l_raspicam start
 
+# pi GPIO
+sudo apt-get update && sudo apt-get install -y pigpio
+
 # npm install
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get update && sudo apt-get install -y nodejs
