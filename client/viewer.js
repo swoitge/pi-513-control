@@ -2,6 +2,7 @@ import M from 'materialize-css';
 
 Template.viewer.onCreated(function() {
   var template = this;
+  template.offset = new ReactiveVar({a:0, b:0, c:0});
   template.orientation = new ReactiveVar({a:0, b:0, c:0});
   template.trackingEnabled = new ReactiveVar(true);
   template.menuVisible = new ReactiveVar(true);
@@ -70,5 +71,15 @@ Template.viewer.events({
   "click .lock":function(event, template){
     var locked = template.locked.get()
     template.locked.set(!locked);
+  },
+  "click .set-offset":function(event, template){
+    var orientation = template.orientation.get();
+    var val = {
+      a: orientation.a,
+      b: orientation.b,
+      c: orientation.c
+    };
+    template.offset.set(val);
+    Meteor.call("setOffset", val);
   }
 });
