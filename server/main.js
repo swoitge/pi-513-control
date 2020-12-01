@@ -33,6 +33,12 @@ Meteor.startup(() => {
 
       // heading
       var targetDeg = currentView.a - currentOffset.a/* - 90*/;
+      if(targetDeg > 270) {
+        targetDeg = targetDeg - 360;
+      }
+      if(targetDeg < -270) {
+        targetDeg = targetDeg + 360;
+      }
       if(targetDeg < 90 && targetDeg > -90) {
         api.servo.setDegree(18, targetDeg);
       }
