@@ -24,7 +24,7 @@ Meteor.startup(() => {
 
 Meteor.methods({
   setViewerOrientation : function(){},
-  setServo : function(pin, pwm){
+  setServo : function(pin, pwm, checkBounds){
 
     // get config
     var conf = SERVOS[pin];
@@ -36,8 +36,10 @@ Meteor.methods({
     // check bounds
     var value = pwm;
 
-    value = Math.max(conf.min, value);
-    value = Math.min(conf.max, value);
+    if(checkBounds) {
+      value = Math.max(conf.min, value);
+      value = Math.min(conf.max, value);
+    }
 
     // set
     conf.gpio.servoWrite(value);
