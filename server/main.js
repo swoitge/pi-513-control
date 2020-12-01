@@ -40,6 +40,6 @@ Meteor.methods({
     value = Math.min(conf.max, value);
 
     // set
-    conf.gpio.servoWrite(pin, value);
+    conf.gpio.servoWrite(value);
   },
 })
