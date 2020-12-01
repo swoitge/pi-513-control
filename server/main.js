@@ -20,13 +20,13 @@ catch(e){
 Meteor.startup(() => {
   // code to run on server at startup
   Meteor.settings.public.mjpegStreamBase = process.env.STREAM_BASE;
-});
 
-Meteor.methods({
-  setViewerOrientation : function(){},
-  setServoPWM          : api.servo.setPWM,
-  setServoDegree       : api.servo.setDegree
-})
+  Meteor.methods({
+    setViewerOrientation : function(){},
+    setServoPWM          : api.servo.setPWM,
+    setServoDegree       : api.servo.setDegree
+  });
+});
 
 api = api || {};
 api.servo = api.servo || {};
