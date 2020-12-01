@@ -23,7 +23,12 @@ Template.viewer.onRendered(function() {
       c: Math.round(event.gamma)
     };
     template.orientation.set(val);
-    Meteor.call("setViewerOrientation", val);
+
+    // transfer to server when not locked
+    var locked = template.locked.get();
+    if(!locked) {
+      Meteor.call("setViewerOrientation", val);
+    }
     //console.log("handle device event", event.alpha, event.beta, event.gamma);
   }, true);
 });
@@ -34,6 +39,9 @@ Template.viewer.helpers({
   },
   orientation : function(){
     return Template.instance().orientation.get();
+  },
+  offset : function(){
+    return Template.instance().offset.get();
   },
   menuVisible : function(){
     return Template.instance().menuVisible.get();
@@ -69,7 +77,7 @@ Template.viewer.events({
     api.rest.zoom(3);
   },
   "click .lock":function(event, template){
-    var locked = template.locked.get()
+    var locked = template.locked.get();
     template.locked.set(!locked);
   },
   "click .set-offset":function(event, template){

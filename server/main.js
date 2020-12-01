@@ -42,7 +42,7 @@ Meteor.startup(() => {
   });
 });
 
-api = api || {};
+if(typeof api == "undefined") api = {};
 api.servo = api.servo || {};
 
 api.servo.setDegree = function(pin, degree){
