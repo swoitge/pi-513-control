@@ -16,6 +16,10 @@ Meteor.startup(function(){
   streamProxy.on('proxyReq', function(proxyReq, req, res, options) {
     console.log("on proxy request");
   });
+  streamProxy.on('error', function(err, req, res) {
+    console.log("on error proxy request", err);
+    res.end();
+  });
 
   // create the proxy object
   var proxy = new httpProxy.createProxyServer({
