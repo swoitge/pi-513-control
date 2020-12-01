@@ -8,13 +8,13 @@ var rpio;
 
 try {
 
-  var Gpio = require('pigpio').Gpio;
+  var Gpio = Npm.require('pigpio').Gpio;
 
   SERVOS[18].gpio = new Gpio(18, {mode: Gpio.OUTPUT});
 }
 catch(e){
-  SERVOS[18].gpio = {servoWrite : function(pin,pwm){console.log("pwmSetData mock", pin, pwm);}};
-  console.log("failed initializing rpio, using mock");
+  SERVOS[18].gpio = {servoWrite : function(pin,pwm){console.log("servoWrite mock", pin, pwm);}};
+  console.log("failed initializing pigpio, using mock");
 }
 
 Meteor.startup(() => {
