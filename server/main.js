@@ -6,6 +6,8 @@ var SERVOS = {
 
 var rpio;
 
+var currentView = {a:0, b:0, c:0};
+
 try {
 
   var Gpio = Npm.require('pigpio').Gpio;
@@ -22,7 +24,12 @@ Meteor.startup(() => {
   Meteor.settings.public.mjpegStreamBase = process.env.STREAM_BASE;
 
   Meteor.methods({
-    setViewerOrientation : function(){},
+    setViewerOrientation : function(values){
+      currentView = values;
+      if(currentView.a < 90 && currentView.a > -90) {
+        api.servo.setDegree(18, currentView.a);
+      }
+    },
     setServoPWM          : api.servo.setPWM,
     setServoDegree       : api.servo.setDegree
   });
