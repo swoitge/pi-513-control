@@ -36,7 +36,7 @@ Meteor.methods({
     // check bounds
     var value = pwm;
 
-    value = Math.max(conf.min, value);W
+    value = Math.max(conf.min, value);
     value = Math.min(conf.max, value);
 
     // set
