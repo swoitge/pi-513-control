@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 var SERVOS = {
-  18: {min:1000, max:2000}
+  18: {min:500, max:2500, deg90:2400}
 }
 
 var rpio;
@@ -24,24 +24,46 @@ Meteor.startup(() => {
 
 Meteor.methods({
   setViewerOrientation : function(){},
-  setServo : function(pin, pwm, checkBounds){
-
-    // get config
-    var conf = SERVOS[pin];
-    if(!conf) {
-      console.log("no servo config found for pin", pin);
-      return;
-    }
-
-    // check bounds
-    var value = pwm;
-
-    if(checkBounds) {
-      value = Math.max(conf.min, value);
-      value = Math.min(conf.max, value);
-    }
-
-    // set
-    conf.gpio.servoWrite(value);
-  },
+  setServoPWM          : api.servo.setPWM,
+  setServoDegree       : api.servo.setDegree
 })
+
+api = api || {};
+api.servo = api.servo || {};
+
+api.servo.setDegree = function(pin, degree){
+  // get config
+  var conf = SERVOS[pin];
+  if(!conf) {
+    console.log("no servo config found for pin", pin);
+    return;
+  }
+
+  // degree to pwm
+  var pwmZero = (conf.max - conf.min) / 2 + conf.min;       // pwm of zero
+  var factor = (conf.deg90 - pwmZero) / 90;                 // factor pwm per degree
+  var pwm = pwmZero + degree * factor;                      // target pwm
+
+  api.servo.setPWM(pin, pwm, true);
+};
+
+api.servo.setPWM = function(pin, pwm, checkBounds){
+
+  // get config
+  var conf = SERVOS[pin];
+  if(!conf) {
+    console.log("no servo config found for pin", pin);
+    return;
+  }
+
+  // check bounds
+  var value = pwm;
+
+  if(checkBounds) {
+    value = Math.max(conf.min, value);
+    value = Math.min(conf.max, value);
+  }
+
+  // set
+  conf.gpio.servoWrite(value);
+};
