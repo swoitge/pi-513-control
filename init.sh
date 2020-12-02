@@ -9,6 +9,27 @@ deb [trusted=yes] http://www.linux-projects.org/listing/uv4l_repo/raspbian/stret
 EOL'
 
 sudo apt-get update && sudo apt-get install -y uv4l uv4l-server uv4l-raspicam uv4l-raspicam-extras
+
+sudo service uv4l_raspicam stop
+
+cat > /etc/uv4l/uv4l-raspicam.conf << EOL
+driver = raspicam
+auto-video_nr = yes
+#only change: framebuffer was 4
+frame-buffers = 1
+encoding = mjpeg
+framerate = 30
+video-denoise = no
+nopreview = no
+fullscreen = no
+preview = 480
+preview = 240
+preview = 320
+preview = 240
+server-option = --webrtc-max-playout-delay=34
+EOL
+
+# restart
 sudo service uv4l_raspicam start
 
 # pi GPIO
