@@ -50,7 +50,7 @@ Meteor.startup(() => {
 function processAxis(channel, servo) {
 
   // heading
-  var targetDeg = currentView[channel] - currentOffse[channel]/* - 90*/;
+  var targetDeg = currentView[channel] - currentOffset[channel]/* - 90*/;
   if(targetDeg > 270) {
     targetDeg = targetDeg - 360;
   }
