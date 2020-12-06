@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 var SERVOS = {
+  15: {min:500, max:2500, deg90:2400},
   18: {min:500, max:2500, deg90:2400}
 }
 
