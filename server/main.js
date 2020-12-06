@@ -14,9 +14,13 @@ try {
 
   var Gpio = Npm.require('pigpio').Gpio;
 
+  // pitch servo
+  SERVOS[15].gpio = new Gpio(15, {mode: Gpio.OUTPUT});
+  // heading servo
   SERVOS[18].gpio = new Gpio(18, {mode: Gpio.OUTPUT});
 }
 catch(e){
+  SERVOS[15].gpio = {servoWrite : function(pin,pwm){console.log("servoWrite mock", pin, pwm);}};
   SERVOS[18].gpio = {servoWrite : function(pin,pwm){console.log("servoWrite mock", pin, pwm);}};
   console.log("failed initializing pigpio, using mock");
 }
@@ -32,22 +36,31 @@ Meteor.startup(() => {
     setViewerOrientation : function(values){
       currentView = values;
 
-      // heading
-      var targetDeg = currentView.a - currentOffset.a/* - 90*/;
-      if(targetDeg > 270) {
-        targetDeg = targetDeg - 360;
-      }
-      if(targetDeg < -270) {
-        targetDeg = targetDeg + 360;
-      }
-      if(targetDeg < 90 && targetDeg > -90) {
-        api.servo.setDegree(18, targetDeg);
-      }
+      // heading (yaw)
+      processAxis("a", 18);
+
+      // pitch
+      processAxis("b", 15);
     },
     setServoPWM          : api.servo.setPWM,
     setServoDegree       : api.servo.setDegree
   });
 });
+
+function processAxis(channel, servo) {
+
+  // heading
+  var targetDeg = currentView[channel] - currentOffse[channel]/* - 90*/;
+  if(targetDeg > 270) {
+    targetDeg = targetDeg - 360;
+  }
+  if(targetDeg < -270) {
+    targetDeg = targetDeg + 360;
+  }
+  if(targetDeg < 90 && targetDeg > -90) {
+    api.servo.setDegree(servo, targetDeg);
+  }
+}
 
 if(typeof api == "undefined") api = {};
 api.servo = api.servo || {};
