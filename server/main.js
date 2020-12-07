@@ -40,7 +40,7 @@ Meteor.startup(() => {
       processAxis("a", 18);
 
       // pitch
-      processAxis("b", 15);
+      processAxis("c", 15);
     },
     setServoPWM          : api.servo.setPWM,
     setServoDegree       : api.servo.setDegree
